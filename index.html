@@ -1,0 +1,62 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Percentage Increase Calculator</title>
+  <meta name="description" content="Free percentage increase calculator. Calculate percent change between two values instantly.">
+  <link rel="canonical" href="https://percentageincreasecalculator.app/" />
+  <style>
+    * { margin: 0; padding: 0; box-sizing: border-box; }
+    body { font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif; background: #f8f9fa; color: #1a1a1a; padding: 20px; }
+    .container { max-width: 480px; margin: 0 auto; }
+    h1 { font-size: 24px; margin-bottom: 8px; }
+    .subtitle { color: #666; margin-bottom: 24px; font-size: 14px; }
+    .field { margin-bottom: 16px; }
+    label { display: block; font-weight: 600; margin-bottom: 4px; font-size: 14px; }
+    input { width: 100%; padding: 10px 12px; border: 1px solid #ddd; border-radius: 6px; font-size: 16px; }
+    input:focus { outline: none; border-color: #2563eb; }
+    .result { background: #fff; border-radius: 12px; padding: 24px; margin-top: 24px; box-shadow: 0 1px 3px rgba(0,0,0,0.1); text-align: center; }
+    .amount { font-size: 36px; font-weight: 700; color: #1a1a1a; }
+    .label { color: #666; font-size: 14px; margin-top: 4px; }
+    .full-version { display: block; text-align: center; margin-top: 24px; padding: 14px; background: #2563eb; color: #fff; text-decoration: none; border-radius: 8px; font-weight: 600; font-size: 15px; }
+    .full-version:hover { background: #1d4ed8; }
+    footer { margin-top: 32px; text-align: center; font-size: 12px; color: #999; }
+    footer a { color: #2563eb; }
+  </style>
+</head>
+<body>
+  <div class="container">
+    <h1>Percentage Increase Calculator</h1>
+    <p class="subtitle">Calculate percent change between two values</p>
+    <div class="field">
+      <label>Original Value</label>
+      <input type="number" id="original" value="100" oninput="calc()">
+    </div>
+    <div class="field">
+      <label>New Value</label>
+      <input type="number" id="newval" value="150" oninput="calc()">
+    </div>
+    <div class="result">
+      <div class="amount" id="result">50%</div>
+      <div class="label">Percentage Increase</div>
+    </div>
+    <a class="full-version" href="https://percentageincreasecalculator.app/">
+      Full Percentage Increase Calculator
+    </a>
+    <footer>
+      <p>Full version at <a href="https://percentageincreasecalculator.app/">Percentage Increase Calculator</a></p>
+    </footer>
+  </div>
+  <script>
+    function calc() {
+      var o = parseFloat(document.getElementById('original').value);
+      var n = parseFloat(document.getElementById('newval').value);
+      if (!o) { document.getElementById('result').textContent = '0%'; return; }
+      var pct = ((n - o) / Math.abs(o)) * 100;
+      document.getElementById('result').textContent = pct.toFixed(2) + '%';
+    }
+    calc();
+  </script>
+</body>
+</html>
