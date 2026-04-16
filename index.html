@@ -3,49 +3,417 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>Percentage Increase Calculator</title>
+  <title>Percentage Increase Calculator – Find % Change Instantly</title>
+  <meta name="description" content="Calculate percentage increase or decrease between two values instantly. Free percentage change calculator with formula explanation and examples." />
   <link rel="canonical" href="https://percentageincreasecalculator.app/" />
   <style>
-    body { font-family: Arial, sans-serif; max-width: 600px; margin: 40px auto; padding: 0 20px; }
-    h1 { color: #2c3e50; }
-    label { display: block; margin-top: 12px; font-weight: bold; }
-    input { width: 100%; padding: 8px; margin-top: 4px; box-sizing: border-box; }
-    button { margin-top: 16px; padding: 10px 20px; background: #2980b9; color: #fff; border: none; cursor: pointer; border-radius: 4px; font-size: 16px; }
-    button:hover { background: #1a6ea8; }
-    #result { margin-top: 20px; font-size: 1.2em; }
-    .cta { display: inline-block; margin-top: 24px; padding: 12px 28px; background: #27ae60; color: #fff; text-decoration: none; border-radius: 4px; font-size: 16px; font-weight: bold; }
-    .cta:hover { background: #1e8449; }
-    footer { margin-top: 40px; font-size: 0.9em; color: #555; }
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+    body { font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif; color: #1a202c; background: #f7fafc; line-height: 1.6; }
+    a { color: #2b6cb0; text-decoration: none; }
+    a:hover { text-decoration: underline; }
+    nav { background: #22543d; padding: 0 24px; display: flex; align-items: center; justify-content: space-between; height: 60px; }
+    .nav-brand { color: #fff; font-size: 1.2rem; font-weight: 700; }
+    .nav-links { display: flex; gap: 24px; }
+    .nav-links a { color: #c6f6d5; font-size: 0.9rem; }
+    .nav-links a:hover { color: #fff; text-decoration: none; }
+    .hero { background: linear-gradient(135deg, #22543d 0%, #38a169 100%); color: #fff; padding: 64px 24px; text-align: center; }
+    .hero h1 { font-size: 2.4rem; font-weight: 800; margin-bottom: 16px; line-height: 1.2; }
+    .hero p { font-size: 1.1rem; opacity: 0.9; max-width: 600px; margin: 0 auto 32px; }
+    .hero-badge { display: inline-block; background: rgba(255,255,255,0.15); border: 1px solid rgba(255,255,255,0.3); border-radius: 999px; padding: 4px 16px; font-size: 0.85rem; margin-bottom: 20px; }
+    .container { max-width: 1100px; margin: 0 auto; padding: 0 24px; }
+    .calc-section { background: #fff; border-radius: 16px; box-shadow: 0 4px 24px rgba(0,0,0,0.08); margin: -40px auto 48px; max-width: 920px; overflow: hidden; }
+    .calc-grid { display: grid; grid-template-columns: 1fr 1fr; }
+    @media (max-width: 640px) { .calc-grid { grid-template-columns: 1fr; } .hero h1 { font-size: 1.7rem; } .nav-links { display: none; } .features-grid, .steps-grid { grid-template-columns: 1fr; } .info-grid { grid-template-columns: 1fr; } .footer-grid { grid-template-columns: 1fr; } }
+    .calc-inputs { padding: 36px; border-right: 1px solid #e2e8f0; }
+    .calc-inputs h2 { font-size: 1.1rem; font-weight: 700; color: #2d3748; margin-bottom: 24px; }
+    .tabs { display: flex; gap: 8px; margin-bottom: 24px; }
+    .tab { flex: 1; padding: 8px; text-align: center; border: 2px solid #e2e8f0; border-radius: 8px; cursor: pointer; font-size: 0.85rem; font-weight: 600; color: #718096; }
+    .tab.active { border-color: #38a169; color: #22543d; background: #f0fff4; }
+    .field { margin-bottom: 20px; }
+    .field label { display: block; font-size: 0.85rem; font-weight: 600; color: #4a5568; margin-bottom: 6px; }
+    .field input { width: 100%; padding: 10px 14px; border: 1.5px solid #e2e8f0; border-radius: 8px; font-size: 1rem; color: #2d3748; transition: border-color 0.2s; background: #f7fafc; }
+    .field input:focus { outline: none; border-color: #38a169; background: #fff; }
+    .calc-btn { width: 100%; padding: 14px; background: #38a169; color: #fff; border: none; border-radius: 8px; font-size: 1rem; font-weight: 700; cursor: pointer; margin-top: 8px; transition: background 0.2s; }
+    .calc-btn:hover { background: #276749; }
+    .calc-result { padding: 36px; background: #f0fff4; display: flex; flex-direction: column; justify-content: center; }
+    .result-label { font-size: 0.85rem; color: #4a5568; font-weight: 600; margin-bottom: 4px; }
+    .result-value { font-size: 3rem; font-weight: 800; color: #22543d; margin-bottom: 8px; }
+    .result-direction { font-size: 0.9rem; font-weight: 600; margin-bottom: 20px; }
+    .result-breakdown { background: #fff; border-radius: 10px; padding: 16px; }
+    .result-row { display: flex; justify-content: space-between; padding: 6px 0; border-bottom: 1px solid #e2e8f0; font-size: 0.9rem; }
+    .result-row:last-child { border-bottom: none; font-weight: 700; }
+    .result-row span:last-child { color: #38a169; font-weight: 600; }
+    .cta-box { margin-top: 24px; padding: 16px; background: #38a169; border-radius: 10px; text-align: center; }
+    .cta-box a { color: #fff; font-weight: 700; font-size: 0.95rem; }
+    .cta-box p { color: #c6f6d5; font-size: 0.8rem; margin-top: 4px; }
+    .section { padding: 64px 0; }
+    .section-title { text-align: center; margin-bottom: 48px; }
+    .section-title h2 { font-size: 1.8rem; font-weight: 800; color: #1a202c; margin-bottom: 12px; }
+    .section-title p { color: #718096; max-width: 540px; margin: 0 auto; }
+    .features-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 24px; }
+    .feature-card { background: #fff; border-radius: 12px; padding: 28px; box-shadow: 0 2px 8px rgba(0,0,0,0.06); }
+    .feature-icon { font-size: 2rem; margin-bottom: 12px; }
+    .feature-card h3 { font-size: 1rem; font-weight: 700; margin-bottom: 8px; color: #2d3748; }
+    .feature-card p { color: #718096; font-size: 0.9rem; }
+    .how-bg { background: #fff; padding: 64px 0; }
+    .steps-grid { display: grid; grid-template-columns: repeat(4, 1fr); gap: 24px; }
+    .step { text-align: center; padding: 24px 16px; }
+    .step-num { width: 48px; height: 48px; background: #38a169; color: #fff; border-radius: 50%; display: flex; align-items: center; justify-content: center; font-weight: 800; font-size: 1.2rem; margin: 0 auto 16px; }
+    .step h3 { font-size: 0.95rem; font-weight: 700; color: #2d3748; margin-bottom: 8px; }
+    .step p { font-size: 0.85rem; color: #718096; }
+    .info-section { padding: 64px 0; }
+    .info-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 48px; align-items: start; }
+    .info-text h2 { font-size: 1.5rem; font-weight: 800; color: #1a202c; margin-bottom: 16px; }
+    .info-text p { color: #4a5568; margin-bottom: 16px; font-size: 0.95rem; }
+    .info-text h3 { font-size: 1rem; font-weight: 700; color: #2d3748; margin: 20px 0 8px; }
+    .formula-box { background: #fff; border: 1px solid #e2e8f0; border-radius: 10px; padding: 20px; font-family: 'Courier New', monospace; font-size: 0.9rem; color: #2d3748; line-height: 1.8; }
+    .formula-box strong { color: #38a169; }
+    .example-cards { display: grid; gap: 12px; }
+    .example-card { background: #fff; border: 1px solid #e2e8f0; border-radius: 10px; padding: 16px; }
+    .example-card h4 { font-size: 0.9rem; font-weight: 700; color: #2d3748; margin-bottom: 8px; }
+    .example-card p { font-size: 0.85rem; color: #4a5568; }
+    .example-card .answer { color: #38a169; font-weight: 700; margin-top: 6px; }
+    .faq-bg { background: #fff; padding: 64px 0; }
+    .faq-list { max-width: 760px; margin: 0 auto; }
+    .faq-item { border-bottom: 1px solid #e2e8f0; }
+    .faq-q { padding: 20px 0; font-weight: 700; color: #2d3748; cursor: pointer; display: flex; justify-content: space-between; align-items: center; font-size: 0.95rem; }
+    .faq-q:hover { color: #38a169; }
+    .faq-a { padding: 0 0 20px; color: #4a5568; font-size: 0.9rem; line-height: 1.7; display: none; }
+    .faq-a.open { display: block; }
+    .faq-arrow { transition: transform 0.2s; }
+    .faq-arrow.open { transform: rotate(180deg); }
+    .table-wrap { overflow-x: auto; }
+    table.comparison { width: 100%; border-collapse: collapse; font-size: 0.9rem; }
+    table.comparison th { background: #22543d; color: #fff; padding: 12px 16px; text-align: left; }
+    table.comparison td { padding: 12px 16px; border-bottom: 1px solid #e2e8f0; color: #4a5568; }
+    table.comparison tr:hover td { background: #f7fafc; }
+    .cta-banner { background: linear-gradient(135deg, #22543d, #38a169); color: #fff; padding: 64px 24px; text-align: center; border-radius: 16px; margin: 48px 0; }
+    .cta-banner h2 { font-size: 1.8rem; font-weight: 800; margin-bottom: 12px; }
+    .cta-banner p { opacity: 0.85; margin-bottom: 28px; }
+    .cta-banner a { display: inline-block; background: #fff; color: #22543d; padding: 14px 36px; border-radius: 8px; font-weight: 800; font-size: 1rem; }
+    footer { background: #1a202c; color: #a0aec0; padding: 48px 24px 24px; }
+    .footer-grid { display: grid; grid-template-columns: 2fr 1fr 1fr; gap: 40px; max-width: 1100px; margin: 0 auto 40px; }
+    .footer-brand { font-size: 1.1rem; font-weight: 700; color: #fff; margin-bottom: 10px; }
+    .footer-desc { font-size: 0.85rem; line-height: 1.7; }
+    .footer-col h4 { color: #fff; font-size: 0.85rem; font-weight: 700; margin-bottom: 14px; text-transform: uppercase; letter-spacing: 0.05em; }
+    .footer-col ul { list-style: none; }
+    .footer-col ul li { margin-bottom: 8px; }
+    .footer-col ul li a { color: #a0aec0; font-size: 0.85rem; }
+    .footer-col ul li a:hover { color: #fff; }
+    .footer-bottom { text-align: center; border-top: 1px solid #2d3748; padding-top: 24px; font-size: 0.8rem; max-width: 1100px; margin: 0 auto; }
   </style>
 </head>
 <body>
+
+<nav>
+  <div class="nav-brand">&#128200; Percentage Increase Calculator</div>
+  <div class="nav-links">
+    <a href="#calculator">Calculator</a>
+    <a href="#how-it-works">How It Works</a>
+    <a href="#examples">Examples</a>
+    <a href="#faq">FAQ</a>
+    <a href="https://percentageincreasecalculator.app/" style="background:#38a169;color:#fff;padding:6px 14px;border-radius:6px;font-weight:700;">Full Version</a>
+  </div>
+</nav>
+
+<div class="hero">
+  <div class="hero-badge">&#10003; Free &nbsp;&bull;&nbsp; Instant Results &nbsp;&bull;&nbsp; No Sign-up</div>
   <h1>Percentage Increase Calculator</h1>
-  <p>Calculate the percentage increase between two values instantly.</p>
+  <p>Calculate the percentage increase or decrease between any two values. Instantly see the change, the difference, and the direction — all in one click.</p>
+</div>
 
-  <label>Original Value
-    <input type="number" id="original" placeholder="100" />
-  </label>
-  <label>New Value
-    <input type="number" id="newval" placeholder="150" />
-  </label>
-  <button onclick="calculate()">Calculate</button>
-  <div id="result"></div>
+<div class="container" id="calculator">
+  <div class="calc-section">
+    <div class="calc-grid">
+      <div class="calc-inputs">
+        <h2>&#128203; Calculate Percentage Change</h2>
+        <div class="tabs">
+          <div class="tab active" onclick="setMode('increase', this)">% Increase</div>
+          <div class="tab" onclick="setMode('decrease', this)">% Decrease</div>
+          <div class="tab" onclick="setMode('difference', this)">% Difference</div>
+        </div>
+        <div class="field">
+          <label id="label1">Original Value</label>
+          <input type="number" id="val1" value="80" placeholder="e.g. 80" />
+        </div>
+        <div class="field">
+          <label id="label2">New Value</label>
+          <input type="number" id="val2" value="100" placeholder="e.g. 100" />
+        </div>
+        <button class="calc-btn" onclick="calculate()">Calculate Percentage &#8594;</button>
+      </div>
+      <div class="calc-result">
+        <div class="result-label">PERCENTAGE CHANGE</div>
+        <div class="result-value" id="pctResult">+25.00%</div>
+        <div class="result-direction" id="dirResult" style="color:#38a169;">&#8593; Increase</div>
+        <div class="result-breakdown">
+          <div class="result-row"><span>Original Value</span><span id="r1">80</span></div>
+          <div class="result-row"><span>New Value</span><span id="r2">100</span></div>
+          <div class="result-row"><span>Absolute Change</span><span id="rDiff">+20</span></div>
+          <div class="result-row"><span>Percentage Change</span><span id="rPct">+25.00%</span></div>
+        </div>
+        <div class="cta-box">
+          <a href="https://percentageincreasecalculator.app/">Percentage Increase Calculator — Full Version</a>
+          <p>Batch calculations, history, export &amp; more</p>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
 
-  <br />
-  <a class="cta" href="https://percentageincreasecalculator.app/">Percentage Increase Calculator</a>
+<div class="section">
+  <div class="container">
+    <div class="section-title">
+      <h2>Everything You Need for Percentage Calculations</h2>
+      <p>From quick mental math to detailed business analysis — our calculator handles it all.</p>
+    </div>
+    <div class="features-grid">
+      <div class="feature-card">
+        <div class="feature-icon">&#9889;</div>
+        <h3>Three Calculation Modes</h3>
+        <p>Calculate percentage increase, percentage decrease, or the absolute percentage difference between two values with a single tool.</p>
+      </div>
+      <div class="feature-card">
+        <div class="feature-icon">&#128202;</div>
+        <h3>Complete Breakdown</h3>
+        <p>See the original value, new value, absolute change, and percentage change all displayed clearly for easy reference.</p>
+      </div>
+      <div class="feature-card">
+        <div class="feature-icon">&#128218;</div>
+        <h3>Formula Explained</h3>
+        <p>We show you the exact formula used so you can learn how to calculate percentage changes yourself without a calculator.</p>
+      </div>
+      <div class="feature-card">
+        <div class="feature-icon">&#128203;</div>
+        <h3>Real-World Examples</h3>
+        <p>Practical examples for prices, salaries, test scores, and more — so you can see how percentage changes apply in everyday life.</p>
+      </div>
+      <div class="feature-card">
+        <div class="feature-icon">&#128273;</div>
+        <h3>100% Free</h3>
+        <p>No ads to click through, no email required, no premium tier. Just instant, accurate percentage calculations every time.</p>
+      </div>
+      <div class="feature-card">
+        <div class="feature-icon">&#128241;</div>
+        <h3>Works on Any Device</h3>
+        <p>Use it on desktop, tablet, or smartphone. Perfect for students, teachers, accountants, and business analysts.</p>
+      </div>
+    </div>
+  </div>
+</div>
 
-  <footer>
-    <p>For the full-featured tool, visit <a href="https://percentageincreasecalculator.app/">Percentage Increase Calculator</a>.</p>
-  </footer>
+<div class="how-bg" id="how-it-works">
+  <div class="container">
+    <div class="section-title">
+      <h2>How to Calculate Percentage Increase</h2>
+      <p>Three simple steps to find the percentage change between any two numbers.</p>
+    </div>
+    <div class="steps-grid">
+      <div class="step">
+        <div class="step-num">1</div>
+        <h3>Enter Original Value</h3>
+        <p>Type in your starting number — this could be a price, salary, score, or any other numerical value.</p>
+      </div>
+      <div class="step">
+        <div class="step-num">2</div>
+        <h3>Enter New Value</h3>
+        <p>Enter the new or updated number you want to compare against the original value.</p>
+      </div>
+      <div class="step">
+        <div class="step-num">3</div>
+        <h3>Choose Mode</h3>
+        <p>Select percentage increase, decrease, or difference depending on the type of comparison you need.</p>
+      </div>
+      <div class="step">
+        <div class="step-num">4</div>
+        <h3>Get Your Result</h3>
+        <p>Instantly see the percentage change, absolute difference, and direction (increase or decrease).</p>
+      </div>
+    </div>
+  </div>
+</div>
 
-  <script>
-    function calculate() {
-      const orig = parseFloat(document.getElementById('original').value);
-      const newv = parseFloat(document.getElementById('newval').value);
-      if (isNaN(orig) || isNaN(newv)) { document.getElementById('result').textContent = 'Please fill in all fields.'; return; }
-      const pct = ((newv - orig) / Math.abs(orig)) * 100;
-      document.getElementById('result').textContent = 'Percentage Increase: ' + pct.toFixed(2) + '%';
+<div class="info-section">
+  <div class="container">
+    <div class="info-grid">
+      <div class="info-text">
+        <h2>The Percentage Increase Formula</h2>
+        <p>Calculating a percentage increase is straightforward once you understand the core formula. The percentage change between two numbers is found by dividing the difference by the original value, then multiplying by 100.</p>
+        <h3>Percentage Increase Formula</h3>
+        <div class="formula-box">
+          <strong>% Increase = [(New - Old) / |Old|] × 100</strong><br/><br/>
+          Example: Old = 80, New = 100<br/>
+          = [(100 - 80) / 80] × 100<br/>
+          = [20 / 80] × 100<br/>
+          = <strong>25% increase</strong>
+        </div>
+        <h3>Percentage Decrease Formula</h3>
+        <div class="formula-box" style="margin-top:12px;">
+          <strong>% Decrease = [(Old - New) / |Old|] × 100</strong><br/><br/>
+          Example: Old = 100, New = 75<br/>
+          = [(100 - 75) / 100] × 100<br/>
+          = <strong>25% decrease</strong>
+        </div>
+        <p style="margin-top:16px;">If the result is positive, the value increased. If it is negative, the value decreased. Our calculator automatically identifies the direction for you.</p>
+      </div>
+      <div id="examples">
+        <h2 style="font-size:1.3rem;font-weight:800;color:#1a202c;margin-bottom:20px;">Common Percentage Change Examples</h2>
+        <div class="example-cards">
+          <div class="example-card">
+            <h4>&#128176; Price Increase</h4>
+            <p>A product costs $45 last year and $54 this year. What is the percentage increase?</p>
+            <p class="answer">= [(54 - 45) / 45] × 100 = +20%</p>
+          </div>
+          <div class="example-card">
+            <h4>&#128188; Salary Raise</h4>
+            <p>Your salary went from $60,000 to $67,500. How much did it increase?</p>
+            <p class="answer">= [(67,500 - 60,000) / 60,000] × 100 = +12.5%</p>
+          </div>
+          <div class="example-card">
+            <h4>&#128197; Test Score</h4>
+            <p>A student scored 72 on one test and 90 on the next. What's the improvement?</p>
+            <p class="answer">= [(90 - 72) / 72] × 100 = +25%</p>
+          </div>
+          <div class="example-card">
+            <h4>&#127981; Sales Drop</h4>
+            <p>A store had 1,200 monthly visitors last month and 900 this month. What's the drop?</p>
+            <p class="answer">= [(1200 - 900) / 1200] × 100 = -25%</p>
+          </div>
+        </div>
+        <div class="table-wrap" style="margin-top:24px;">
+          <table class="comparison">
+            <thead><tr><th>Original</th><th>New</th><th>Change</th><th>% Change</th></tr></thead>
+            <tbody>
+              <tr><td>100</td><td>125</td><td>+25</td><td>+25.00%</td></tr>
+              <tr><td>200</td><td>150</td><td>-50</td><td>-25.00%</td></tr>
+              <tr><td>50</td><td>75</td><td>+25</td><td>+50.00%</td></tr>
+              <tr><td>1000</td><td>850</td><td>-150</td><td>-15.00%</td></tr>
+              <tr><td>40</td><td>52</td><td>+12</td><td>+30.00%</td></tr>
+            </tbody>
+          </table>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<div class="faq-bg" id="faq">
+  <div class="container">
+    <div class="section-title">
+      <h2>Frequently Asked Questions</h2>
+      <p>Common questions about calculating percentage increases and changes.</p>
+    </div>
+    <div class="faq-list">
+      <div class="faq-item">
+        <div class="faq-q" onclick="toggleFaq(this)">What is the difference between percentage increase and percentage difference? <span class="faq-arrow">&#9660;</span></div>
+        <div class="faq-a">Percentage increase measures change from an original value to a new value, always using the original as the base. Percentage difference compares two values without designating one as the original — it uses the average of both values as the base. Use percentage increase when you have a clear "before" and "after" scenario.</div>
+      </div>
+      <div class="faq-item">
+        <div class="faq-q" onclick="toggleFaq(this)">Can the percentage increase be more than 100%? <span class="faq-arrow">&#9660;</span></div>
+        <div class="faq-a">Yes! If a value doubles, that is a 100% increase. If it triples, that is a 200% increase. There is no upper limit to percentage increase. For example, if sales go from $10,000 to $30,000, that is a 200% increase.</div>
+      </div>
+      <div class="faq-item">
+        <div class="faq-q" onclick="toggleFaq(this)">How do I calculate percentage increase without a calculator? <span class="faq-arrow">&#9660;</span></div>
+        <div class="faq-a">Subtract the original value from the new value to find the difference. Then divide that difference by the original value. Finally, multiply by 100 to convert to a percentage. For example: (New - Old) ÷ Old × 100.</div>
+      </div>
+      <div class="faq-item">
+        <div class="faq-q" onclick="toggleFaq(this)">What does a negative percentage increase mean? <span class="faq-arrow">&#9660;</span></div>
+        <div class="faq-a">A negative result means the value decreased — it is actually a percentage decrease. For example, if you calculate a percentage increase and get -15%, it means the new value is 15% lower than the original value.</div>
+      </div>
+      <div class="faq-item">
+        <div class="faq-q" onclick="toggleFaq(this)">How is percentage increase used in business? <span class="faq-arrow">&#9660;</span></div>
+        <div class="faq-a">Percentage increase is used extensively in business for tracking revenue growth, comparing year-over-year performance, calculating price changes, measuring employee salary increases, analyzing website traffic trends, and reporting financial results to stakeholders.</div>
+      </div>
+      <div class="faq-item">
+        <div class="faq-q" onclick="toggleFaq(this)">What's the difference between percentage increase and percentage points? <span class="faq-arrow">&#9660;</span></div>
+        <div class="faq-a">These are often confused. If an interest rate goes from 2% to 3%, that is an increase of 1 percentage point, but it is a 50% increase in the rate itself. Percentage points measure the absolute arithmetic difference, while percentage increase measures the relative change from the original.</div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<div class="container">
+  <div class="cta-banner">
+    <h2>Need More Percentage Tools?</h2>
+    <p>The full version includes batch calculations, percentage of a number, reverse percentage, and export options.</p>
+    <a href="https://percentageincreasecalculator.app/">Percentage Increase Calculator</a>
+  </div>
+</div>
+
+<footer>
+  <div class="footer-grid">
+    <div>
+      <div class="footer-brand">&#128200; Percentage Increase Calculator</div>
+      <p class="footer-desc">A free tool for instantly calculating percentage increase, decrease, and change between any two values. Used by students, teachers, and business analysts worldwide.</p>
+    </div>
+    <div class="footer-col">
+      <h4>Tools</h4>
+      <ul>
+        <li><a href="#calculator">% Increase</a></li>
+        <li><a href="#calculator">% Decrease</a></li>
+        <li><a href="#calculator">% Difference</a></li>
+        <li><a href="https://percentageincreasecalculator.app/">Full Version</a></li>
+      </ul>
+    </div>
+    <div class="footer-col">
+      <h4>Learn</h4>
+      <ul>
+        <li><a href="#how-it-works">How It Works</a></li>
+        <li><a href="#examples">Examples</a></li>
+        <li><a href="#faq">FAQ</a></li>
+        <li><a href="https://percentageincreasecalculator.app/">More Calculators</a></li>
+      </ul>
+    </div>
+  </div>
+  <div class="footer-bottom">
+    <p>&copy; 2025 Percentage Increase Calculator. Free educational tool for calculating percentage changes.</p>
+  </div>
+</footer>
+
+<script>
+  let mode = 'increase';
+  function setMode(m, el) {
+    mode = m;
+    document.querySelectorAll('.tab').forEach(t => t.classList.remove('active'));
+    el.classList.add('active');
+    const labels = { increase: ['Original Value','New Value'], decrease: ['Original Value','New Value'], difference: ['Value A','Value B'] };
+    document.getElementById('label1').textContent = labels[m][0];
+    document.getElementById('label2').textContent = labels[m][1];
+    calculate();
+  }
+  function calculate() {
+    const v1 = parseFloat(document.getElementById('val1').value);
+    const v2 = parseFloat(document.getElementById('val2').value);
+    if (isNaN(v1) || isNaN(v2)) return;
+    let pct, diff, dir, color;
+    if (mode === 'difference') {
+      const avg = (Math.abs(v1) + Math.abs(v2)) / 2;
+      pct = avg === 0 ? 0 : Math.abs(v2 - v1) / avg * 100;
+      diff = v2 - v1;
+      dir = '&#8596; Difference'; color = '#718096';
+    } else {
+      if (v1 === 0) { document.getElementById('pctResult').textContent = 'N/A'; return; }
+      pct = (v2 - v1) / Math.abs(v1) * 100;
+      diff = v2 - v1;
+      if (pct >= 0) { dir = '&#8593; Increase'; color = '#38a169'; }
+      else { dir = '&#8595; Decrease'; color = '#e53e3e'; }
     }
-  </script>
+    document.getElementById('pctResult').textContent = (pct >= 0 ? '+' : '') + pct.toFixed(2) + '%';
+    document.getElementById('dirResult').innerHTML = dir;
+    document.getElementById('dirResult').style.color = color;
+    document.getElementById('r1').textContent = v1.toLocaleString();
+    document.getElementById('r2').textContent = v2.toLocaleString();
+    document.getElementById('rDiff').textContent = (diff >= 0 ? '+' : '') + diff.toLocaleString();
+    document.getElementById('rPct').textContent = (pct >= 0 ? '+' : '') + pct.toFixed(2) + '%';
+    document.getElementById('rPct').style.color = color;
+  }
+  function toggleFaq(el) {
+    const ans = el.nextElementSibling;
+    const arrow = el.querySelector('.faq-arrow');
+    ans.classList.toggle('open');
+    arrow.classList.toggle('open');
+  }
+  calculate();
+</script>
 </body>
-</html>
+                                                    </html>
