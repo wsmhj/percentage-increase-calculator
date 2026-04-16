@@ -1,0 +1,17 @@
+{
+  "name": "percentage-increase-calculator",
+  "version": "1.0.0",
+  "description": "Calculate percentage increase, decrease, and percent change between values",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "keywords": ["percentage", "calculator", "percent-change", "math", "utility"],
+  "author": "wsmhj",
+  "license": "MIT",
+  "homepage": "https://percentageincreasecalculator.app",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/wsmhj/percentage-increase-calculator.git"
+  }
+}
